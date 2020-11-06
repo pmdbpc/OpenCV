@@ -12,8 +12,8 @@ from PIL import Image
 from PIL import ImageTk
 from pypylon import pylon
 # Own modules
-from cameraDevice import MyCameraInstance
-from inspectionModule import *
+from camera_device import MyCameraInstance
+from inspection_module import *
 
 
 class ApplicationWindow:
