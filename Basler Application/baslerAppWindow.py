@@ -50,6 +50,7 @@ class ApplicationWindow:
         self.configure_menus()
         self.configure_buttons()
         self.configure_other_controls()
+        self.default_button_funcs()
 
     def configure_menus(self):
         # Configuring the menu bar for the application window
@@ -90,7 +91,6 @@ class ApplicationWindow:
         self.control_button_10 = Button(self.frame, width=10, font='calibri 12 bold', relief=FLAT,
                                    text='Exit', command=self.exit_application)
         self.control_button_10.place(x=5, y=583)
-        self.default_button_funcs()
 
     def configure_other_controls(self):
         # Select an operation from drop down menu
@@ -135,7 +135,7 @@ class ApplicationWindow:
         self.display_update_handler = ApplicationWindow.DisplayUpdateHandler(self)
         self.display_update_handler_hdl = self.vid.camera.RegisterImageEventHandler(self.display_update_handler,
                                                                                     pylon.RegistrationMode_ReplaceAll,
-                                                                                    pylon.Cleanup_None)
+                                                                                    pylon.Cleanup_Delete)
         self.vid.camera.StartGrabbing(self.vid.capture_strategy(), pylon.GrabLoop_ProvidedByInstantCamera)
         pass
 
