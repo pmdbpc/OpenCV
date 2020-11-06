@@ -9,4 +9,4 @@ from baslerAppWindow import ApplicationWindow
 applicationName = 'Basler Camera Viewer'
 
 if __name__ == "__main__":
-    ApplicationWindow()
+    ApplicationWindow(applicationName)
