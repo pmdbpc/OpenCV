@@ -8,7 +8,8 @@ from __future__ import print_function
 import threading
 from tkinter import *
 import tkinter.messagebox
-from PIL import Image, ImageTk
+from PIL import Image
+from PIL import ImageTk
 from pypylon import pylon
 # Own modules
 from cameraDevice import MyCameraInstance
@@ -87,7 +88,7 @@ class ApplicationWindow:
                                         text='Config Cam', command=self.cam_config)
         self.control_button_06.place(x=5, y=265)
         self.control_button_07 = Button(self.frame, width=10, font='calibri 12 bold', relief=FLAT,
-                                        text='Test', command=self.return_to_main)
+                                        text='Back', command=self.return_to_main)
         self.control_button_10 = Button(self.frame, width=10, font='calibri 12 bold', relief=FLAT,
                                    text='Exit', command=self.exit_application)
         self.control_button_10.place(x=5, y=583)
@@ -126,7 +127,6 @@ class ApplicationWindow:
         tf = threading.Thread(target=self.cam_live)         # Create a thread to run live mode
         tf.start()                                          # Enable the live mode thread running
         tf.join()
-        pass
 
     def cam_live(self):
         if not self.vid.camera.IsOpen():                    # Check if camera device is already open
@@ -137,7 +137,6 @@ class ApplicationWindow:
                                                                                     pylon.RegistrationMode_ReplaceAll,
                                                                                     pylon.Cleanup_Delete)
         self.vid.camera.StartGrabbing(self.vid.capture_strategy(), pylon.GrabLoop_ProvidedByInstantCamera)
-        pass
 
     def stop_live(self):
         # Disable the camera live streaming - clear canvas, stop grabbing and release all capture events
@@ -148,7 +147,6 @@ class ApplicationWindow:
         self.vid.enable_frame_rate.SetValue(False)
         self.default_button_funcs()                         # Set the default button functions
         self.vid.camera.Close()
-        pass
 
     def cam_snapshot(self, value = 0):
         if not self.vid.camera.IsOpen():                    # Check if camera device is already open
@@ -174,20 +172,21 @@ class ApplicationWindow:
     def cam_config(self):
         # Configure the camera parameters for usage. WIP
         self.canvas.place_forget()
+        self.live_button_funcs()
+        self.control_button_04['state'] = DISABLED
         self.control_button_06.place_forget()
         self.control_button_07.place(x=5, y=265)
-        pass
 
     def return_to_main(self):
         self.canvas.place(x=110, y=15)
         self.control_button_07.place_forget()
         self.control_button_06.place(x=5, y=265)
-        pass
+        self.default_button_funcs()
 
     def inspect_image(self):
         # Capture a new image for inspection and call the inspection routine based on selected dropdown option.
         self.cam_snapshot()
-        inspection_result = self.inspect_module.inspect_image(image=self.snap, inspectionlogic=self.variable.get())
+        inspection_result = self.inspect_module.inspect_image(image=self.snap, insp_logic=self.variable.get())
         # Scaling the image as per the canvas size for full view of frame
         self.canvas_image_packer(inspection_result)
 
@@ -208,11 +207,11 @@ class ApplicationWindow:
     @staticmethod
     def app_help_menu():
         # Help window explaining control button functions for the application
-        helpString = '\n'.join(['Snapshot: Captures current frame from camera.',
+        help_string = '\n'.join(['Snapshot: Captures current frame from camera.',
                                 'Info: Displays all camera device information.',
                                 'Live: Enable camera live streaming - Function Disabled',
                                 'Exit: Exit the application.'])
-        tkinter.messagebox.showinfo("Help ", helpString)
+        tkinter.messagebox.showinfo("Help ", help_string)
 
     @staticmethod
     def cv_help_menu():
@@ -224,7 +223,6 @@ class ApplicationWindow:
         # Application information window
         tkinter.messagebox.showinfo("About", 'Application Name: ' + self.appName +
                                     '\nVersion No.: 1.0.0\nDeveloped by: Parth Desai')
-
 
     class DisplayUpdateHandler(pylon.ImageEventHandler):
         def __init__(self, application):
@@ -238,7 +236,3 @@ class ApplicationWindow:
                 image = self.app.vid.converter.Convert(grabResult)
                 image = image.GetArray()
                 self.app.canvas_image_packer(image)
-
-
-if __name__ == "__main__":
-    ApplicationWindow(app_name='My window')

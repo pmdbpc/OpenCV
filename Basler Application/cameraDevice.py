@@ -46,8 +46,6 @@ class MyCameraInstance():
         self.converter.OutputPixelFormat = pylon.PixelType_BGR8packed
         self.converter.OutputBitAlignment = pylon.OutputBitAlignment_MsbAligned
 
-        pass
-
     def configure_my_camera(self, config_settings=None):
         if config_settings is None:
             config_settings = {}
@@ -68,19 +66,18 @@ class MyCameraInstance():
         self.vertical_resolution.SetValue(config_settings['Vertical_Resolution'])
         self.horizontal_resolution.SetValue(config_settings['Horizontal_Resolution'])
         self.output_selector.SetValue(config_settings['Output_Selector'])
-        pass
 
     def get_my_camera_info(self):
-        myCameraInfo = dict({'Vendor Name':self.camera.DeviceVendorName.GetValue(),
-                             'Model Name':self.camera.DeviceModelName.GetValue(),
-                             'Serial No.':self.camera.DeviceID.GetValue(),
-                             'Version No.':self.camera.DeviceVersion.GetValue(),
-                             'Firmware Version No.':self.camera.DeviceFirmwareVersion.GetValue(),
-                             'User ID':self.camera.DeviceUserID.GetValue(),
-                             'IP Address':self.camera.GetDeviceInfo().GetIpAddress(),
-                             'Port Address':self.camera.GetDeviceInfo().GetPortNr(),
-                             'MAC Address':self.camera.GetDeviceInfo().GetMacAddress()})
-        return myCameraInfo
+        my_camera_info = dict({'Vendor Name':self.camera.DeviceVendorName.GetValue(),
+                               'Model Name':self.camera.DeviceModelName.GetValue(),
+                               'Serial No.':self.camera.DeviceID.GetValue(),
+                               'Version No.':self.camera.DeviceVersion.GetValue(),
+                               'Firmware Version No.':self.camera.DeviceFirmwareVersion.GetValue(),
+                               'User ID':self.camera.DeviceUserID.GetValue(),
+                               'IP Address':self.camera.GetDeviceInfo().GetIpAddress(),
+                               'Port Address':self.camera.GetDeviceInfo().GetPortNr(),
+                               'MAC Address':self.camera.GetDeviceInfo().GetMacAddress()})
+        return my_camera_info
 
     def grab_image(self, timeout=5000):
         self.camera.StartGrabbing(self.capture_strategy())

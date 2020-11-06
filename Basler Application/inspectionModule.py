@@ -4,7 +4,7 @@ Author: "Parth Desai"
 """
 # Importing dependencies
 # Built-in/Generic Imports
-import cv2, time, numpy
+import cv2
 # Libraries
 from pyzbar import pyzbar
 from pyzbar.pyzbar import ZBarSymbol
@@ -12,17 +12,17 @@ from pyzbar.pyzbar import ZBarSymbol
 
 class MyInspectionModule:
     def __init__(self):
-        pass
+        self.image = None
 
     def inspect_image(self, image=None, insp_logic=None, inspection_settings=None):
         if inspection_settings is None:
-            inspection_settings = []
+            inspection_sets = []
+        else:
+            inspection_sets = inspection_settings
         self.image = image
-        self.inspection_logic = insp_logic
-        self.insection_settings = inspection_settings
-        if self.inspection_logic == 'EAN-13':
+        if insp_logic == 'EAN-13':
             return self.run_barcode_ean13_inspection()
-        elif self.inspection_logic == 'QRCode':
+        elif insp_logic == 'QRCode':
             return self.run_qr_code_inspection()
         else:
             return cv2.putText(self.image, "No Inspection selected for the Image", (50, 50),
@@ -64,7 +64,3 @@ class MyInspectionModule:
             overlay_image = cv2.putText(self.image, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX,
                                         0.5, (0, 0, 255), 2)
         return overlay_image
-
-
-if __name__ == "__main__":
-    MyInspectionModule()
