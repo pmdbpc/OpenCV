@@ -4,7 +4,7 @@ Author: "Parth Desai"
 """
 # Importing dependencies
 # Own modules
-from baslerAppWindow import ApplicationWindow
+from basler_app_window import ApplicationWindow
 
 applicationName = 'Basler Camera Viewer'
 
